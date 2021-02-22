@@ -4,10 +4,10 @@ import android.content.Context
 import com.mopub.common.BaseAdapterConfiguration
 import com.mopub.common.OnNetworkInitializationFinishedListener
 
-class PollfishAdapterConfiguration(): BaseAdapterConfiguration() {
+class PollfishAdapterConfiguration: BaseAdapterConfiguration() {
 
     override fun getAdapterVersion(): String {
-        return "5.5.5.1"
+        return PollfishConstants.POLLFISH_ADAPTER_VERSION
     }
 
     override fun getBiddingToken(context: Context): String? {
@@ -15,18 +15,17 @@ class PollfishAdapterConfiguration(): BaseAdapterConfiguration() {
     }
 
     override fun getMoPubNetworkName(): String {
-        return "pollfish"
+        return PollfishConstants.POLLFISH_NETWORK_NAME
     }
 
     override fun getNetworkSdkVersion(): String {
-        return "5.5.5"
+        return PollfishConstants.POLLFISH_SDK_VERSION
     }
 
     override fun initializeNetwork(
         context: Context,
         configuration: MutableMap<String, String>?,
         listener: OnNetworkInitializationFinishedListener
-    ) {
-        // NO-OP
-    }
+    ) {}
+
 }

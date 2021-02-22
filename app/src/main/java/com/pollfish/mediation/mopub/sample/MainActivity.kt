@@ -2,19 +2,20 @@ package com.pollfish.mediation.mopub.sample
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.mopub.common.MoPub
-import com.mopub.common.MoPubReward
-import com.mopub.common.SdkConfiguration
-import com.mopub.common.SdkInitializationListener
+import com.mopub.common.*
 import com.mopub.common.logging.MoPubLog
 import com.mopub.mobileads.*
 import com.pollfish.mediation.mopub.sample.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(), SdkInitializationListener, MoPubRewardedAdListener {
 
-    private lateinit var binding: ActivityMainBinding
+    companion object {
+        const val TAG = "MainActivity"
+    }
 
+    private lateinit var binding: ActivityMainBinding
     private lateinit var adUnitId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,23 +23,19 @@ class MainActivity : AppCompatActivity(), SdkInitializationListener, MoPubReward
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.showRewardedAdButton.setOnClickListener {
-            MoPubRewardedAds.showRewardedAd(adUnitId)
-        }
+        adUnitId = getString(R.string.rewarded_video_unit_id)
 
-        adUnitId = getString(R.string.fullscreen_add_unit_id)
+        initializeMoPub()
+    }
 
-        val pollfishMediatedNetworkConfiguration = mutableMapOf<String, String>()
+    private fun initializeMoPub() {
         val vungleAdapterConfiguration = mutableMapOf<String, String>()
-
-        pollfishMediatedNetworkConfiguration["api_key"] = getString(R.string.pollfish_api_key)
 
         val configuration = SdkConfiguration.Builder(adUnitId)
             .withAdditionalNetwork(PollfishAdapterConfiguration::class.java.name)
             .withMediationSettings(GooglePlayServicesRewardedVideo.GooglePlayServicesMediationSettings())
             .withMediatedNetworkConfiguration(
-                PollfishAdapterConfiguration::class.java.name,
-                pollfishMediatedNetworkConfiguration
+                PollfishAdapterConfiguration::class.java.name, emptyMap()
             )
             .withMediatedNetworkConfiguration(
                 VungleAdapterConfiguration::class.java.name,
@@ -53,33 +50,41 @@ class MainActivity : AppCompatActivity(), SdkInitializationListener, MoPubReward
     override fun onInitializationFinished() {
         MoPubRewardedAds.setRewardedAdListener(this)
         MoPubRewardedAds.loadRewardedAd(adUnitId)
+        Log.d(TAG, "onInitializationFinished")
     }
 
     override fun onRewardedAdClicked(adUnitId: String) {
-
+        Log.d(TAG, "onRewardedAdClicked")
     }
 
     override fun onRewardedAdClosed(adUnitId: String) {
-
+        Log.d(TAG, "onRewardedAdClosed")
     }
 
     override fun onRewardedAdCompleted(adUnitIds: Set<String?>, reward: MoPubReward) {
-
+        Log.d(TAG, "onRewardedAdCompleted")
     }
 
     override fun onRewardedAdLoadFailure(adUnitId: String, errorCode: MoPubErrorCode) {
         binding.showRewardedAdButton.isEnabled = false
+        Log.d(TAG, "onRewardedAdLoadFailure")
     }
 
     override fun onRewardedAdLoadSuccess(adUnitId: String) {
         binding.showRewardedAdButton.isEnabled = true
+        Log.d(TAG, "onRewardedAdLoadSuccess")
     }
 
     override fun onRewardedAdShowError(adUnitId: String, errorCode: MoPubErrorCode) {
-        Log.d(this::class.java.name, "onRewardedAdShowError: $errorCode")
+        Log.d(TAG, "onRewardedAdShowError: $errorCode")
     }
 
     override fun onRewardedAdStarted(adUnitId: String) {
-
+        Log.d(TAG, "onRewardedAdStarted")
     }
+
+    fun onShowRewardedAd(view: View) {
+        MoPubRewardedAds.showRewardedAd(adUnitId)
+    }
+
 }

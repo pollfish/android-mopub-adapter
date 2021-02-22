@@ -15,21 +15,25 @@ class MainActivity : AppCompatActivity(), SdkInitializationListener, MoPubReward
 
     private lateinit var binding: ActivityMainBinding
 
+    private lateinit var adUnitId: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.showRewardedAdButton.setOnClickListener {
-            MoPubRewardedAds.showRewardedAd("1db01b491c1746a18d290ed77084ab14")
+            MoPubRewardedAds.showRewardedAd(adUnitId)
         }
+
+        adUnitId = getString(R.string.fullscreen_add_unit_id)
 
         val pollfishMediatedNetworkConfiguration = mutableMapOf<String, String>()
         val vungleAdapterConfiguration = mutableMapOf<String, String>()
 
-        pollfishMediatedNetworkConfiguration["api_key"] = "01b4e6c2-77ca-4cbc-ad40-d66af5423ea4"
+        pollfishMediatedNetworkConfiguration["api_key"] = getString(R.string.pollfish_api_key)
 
-        val configuration = SdkConfiguration.Builder("1db01b491c1746a18d290ed77084ab14")
+        val configuration = SdkConfiguration.Builder(adUnitId)
             .withAdditionalNetwork(PollfishAdapterConfiguration::class.java.name)
             .withMediationSettings(GooglePlayServicesRewardedVideo.GooglePlayServicesMediationSettings())
             .withMediatedNetworkConfiguration(
@@ -48,7 +52,7 @@ class MainActivity : AppCompatActivity(), SdkInitializationListener, MoPubReward
 
     override fun onInitializationFinished() {
         MoPubRewardedAds.setRewardedAdListener(this)
-        MoPubRewardedAds.loadRewardedAd("1db01b491c1746a18d290ed77084ab14")
+        MoPubRewardedAds.loadRewardedAd(adUnitId)
     }
 
     override fun onRewardedAdClicked(adUnitId: String) {

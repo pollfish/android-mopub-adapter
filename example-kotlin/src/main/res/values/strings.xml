@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Example Kotlin</string>
+
+    <string name="rewarded_video_unit_id">AD_UNIT_ID</string>
+
+    <string name="show_rewarded_ad_button_text">Show Rewarded Ad</string>
+</resources>

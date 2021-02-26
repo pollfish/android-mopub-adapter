@@ -68,7 +68,9 @@ class PollfishMoPubAdapter : BaseAd() {
         }
 
         val releaseMode = PollfishMoPubMediationSettings.releaseMode ?: run {
-            adData.extras[PollfishConstants.POLLFISH_RELEASE_MODE_EXTRA_KEY].toBoolean()
+            adData.extras[PollfishConstants.POLLFISH_RELEASE_MODE_EXTRA_KEY]?.let {
+                adData.extras[PollfishConstants.POLLFISH_RELEASE_MODE_EXTRA_KEY].toBoolean()
+            } ?: true
         }
 
         if (apiKey == null) {
@@ -100,7 +102,7 @@ class PollfishMoPubAdapter : BaseAd() {
             }
             .pollfishUserNotEligibleListener {
                 MoPubLog.log(MoPubLog.AdapterLogEvent.CUSTOM, TAG, "Pollfish Surveys Not Available")
-                mInteractionListener?.onAdFailed(MoPubErrorCode.NETWORK_NO_FILL)
+                mInteractionListener?.onAdFailed(MoPubErrorCode.AD_SHOW_ERROR)
             }
             .pollfishUserRejectedSurveyListener {
                 MoPubLog.log(

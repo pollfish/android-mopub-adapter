@@ -1,9 +1,0 @@
-<resources>
-    <string name="app_name">MoPub Adapter Sample</string>
-
-    <string name="rewarded_video_unit_id">1db01b491c1746a18d290ed77084ab14</string>
-    <string name="fullscreen_add_unit_id">cf9bf274dc9747c7ae4d546c347314a4</string>
-    <string name="pollfish_api_key">01b4e6c2-77ca-4cbc-ad40-d66af5423ea4</string>
-
-    <string name="show_rewarded_ad_button_text">Show Rewarded Ad</string>
-</resources>

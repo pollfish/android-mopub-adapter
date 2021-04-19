@@ -14,21 +14,13 @@ If you are using Android Studio, right click on your project and select New Modu
 
 **OR**
 
-#### **Retrieve Pollfish MoPub Adapter through jCenter()**
+#### **Retrieve Pollfish MoPub Adapter through maven()**
 
-Retrieve Pollfish through **jCenter()** with gradle by adding the following line in your project **build.gradle** (not the top level one, the one under 'app') in  dependencies section:  
+Retrieve Pollfish through **maven()** with gradle by adding the following line in your project **build.gradle** (not the top level one, the one under 'app') in  dependencies section:  
 
 ```groovy
 dependencies {
-    implementation 'com.google.android.gms:play-services-ads-identifier:17.0.0@aar'
-
-    implementation('com.mopub:mopub-sdk-fullscreen:5.16.0@aar') {
-        transitive = true
-    }
-
-    implementation 'com.pollfish:pollfish:5.6.0:googleplayRelease@aar'
-
-    implementation 'com.pollfish.mediation:pollfish-mopub:5.6.0.0'
+    implementation 'com.pollfish:mopub-adapter:6.0.2.0'
 }
 ```
 

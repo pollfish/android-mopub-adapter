@@ -6,7 +6,9 @@ import com.mopub.common.LifecycleListener
 import com.mopub.common.MediationSettings
 import com.mopub.common.MoPubReward
 import com.mopub.common.logging.MoPubLog
-import com.pollfish.main.PollFish
+import com.pollfish.Pollfish
+import com.pollfish.builder.*;
+import com.pollfish.callback.*
 
 class PollfishMoPubAdapter : BaseAd() {
 
@@ -27,7 +29,12 @@ class PollfishMoPubAdapter : BaseAd() {
     }
 
     override fun load(context: Context, adData: AdData) {
-        if (PollFish.isPollfishPanelOpen()) {
+        if (android.os.Build.VERSION.SDK_INT < 21) {
+            mLoadListener?.onAdLoadFailed(MoPubErrorCode.CANCELLED)
+            return
+        }
+
+        if (Pollfish.isPollfishPanelOpen()) {
             MoPubLog.log(
                 MoPubLog.AdapterLogEvent.LOAD_FAILED,
                 TAG,
@@ -83,75 +90,98 @@ class PollfishMoPubAdapter : BaseAd() {
             return
         }
 
-        val params = PollFish.ParamsBuilder(apiKey)
+        val params = Params.Builder(apiKey)
             .releaseMode(releaseMode)
-            .offerWallMode(offerwallMode)
+            .offerwallMode(offerwallMode)
             .apply {
                 (requestUUID)?.let {
                     this.requestUUID(it)
                 }
             }
-            .pollfishOpenedListener {
-                MoPubLog.log(MoPubLog.AdapterLogEvent.DID_APPEAR, TAG)
-                mInteractionListener?.onAdShown()
-                mInteractionListener?.onAdImpression()
-            }
-            .pollfishClosedListener {
-                MoPubLog.log(MoPubLog.AdapterLogEvent.DID_DISAPPEAR, TAG)
-                mInteractionListener?.onAdDismissed()
-            }
-            .pollfishUserNotEligibleListener {
-                MoPubLog.log(MoPubLog.AdapterLogEvent.CUSTOM, TAG, "Pollfish Surveys Not Available")
-                mInteractionListener?.onAdFailed(MoPubErrorCode.AD_SHOW_ERROR)
-            }
-            .pollfishUserRejectedSurveyListener {
-                MoPubLog.log(
-                    MoPubLog.AdapterLogEvent.CUSTOM,
-                    TAG,
-                    "User Rejected Survey"
-                )
-                mInteractionListener?.onAdDismissed()
-            }
-            .pollfishSurveyNotAvailableListener {
-                MoPubLog.log(
-                    MoPubLog.AdapterLogEvent.LOAD_FAILED,
-                    TAG,
-                    "Pollfish Surveys Not Available"
-                )
-                mLoadListener?.onAdLoadFailed(MoPubErrorCode.NETWORK_NO_FILL)
-            }
-            .pollfishReceivedSurveyListener {
-                MoPubLog.log(
-                    MoPubLog.AdapterLogEvent.LOAD_SUCCESS,
-                    TAG,
-                    "Pollfish Survey Received"
-                )
-                mLoadListener?.onAdLoaded()
-            }
-            .pollfishCompletedSurveyListener {
-                MoPubLog.log(
-                    MoPubLog.AdapterLogEvent.SHOULD_REWARD,
-                    TAG,
-                    "Pollfish Survey Completed"
-                )
+            .pollfishOpenedListener(object : PollfishOpenedListener {
+                override fun onPollfishOpened() {
+                    MoPubLog.log(MoPubLog.AdapterLogEvent.DID_APPEAR, TAG)
+                    mInteractionListener?.onAdShown()
+                    mInteractionListener?.onAdImpression()
+                }
+            })
+            .pollfishClosedListener(object : PollfishClosedListener {
+                override fun onPollfishClosed() {
+                    MoPubLog.log(MoPubLog.AdapterLogEvent.DID_DISAPPEAR, TAG)
+                    mInteractionListener?.onAdDismissed()
+                }
+            })
+            .pollfishUserNotEligibleListener(object : PollfishUserNotEligibleListener {
+                override fun onUserNotEligible() {
+                    MoPubLog.log(
+                        MoPubLog.AdapterLogEvent.CUSTOM,
+                        TAG,
+                        "Pollfish Surveys Not Available"
+                    )
+                    mInteractionListener?.onAdFailed(MoPubErrorCode.AD_SHOW_ERROR)
+                }
+            })
+            .pollfishUserRejectedSurveyListener(object : PollfishUserRejectedSurveyListener {
+                override fun onUserRejectedSurvey() {
+                    MoPubLog.log(
+                        MoPubLog.AdapterLogEvent.CUSTOM,
+                        TAG,
+                        "User Rejected Survey"
+                    )
+                    mInteractionListener?.onAdDismissed()
+                }
+            })
+            .pollfishSurveyNotAvailableListener(object : PollfishSurveyNotAvailableListener {
+                override fun onPollfishSurveyNotAvailable() {
+                    MoPubLog.log(
+                        MoPubLog.AdapterLogEvent.LOAD_FAILED,
+                        TAG,
+                        "Pollfish Surveys Not Available"
+                    )
+                    mLoadListener?.onAdLoadFailed(MoPubErrorCode.NETWORK_NO_FILL)
+                }
+            })
+            .pollfishSurveyReceivedListener(object : PollfishSurveyReceivedListener {
+                override fun onPollfishSurveyReceived(surveyInfo: SurveyInfo?) {
+                    MoPubLog.log(
+                        MoPubLog.AdapterLogEvent.LOAD_SUCCESS,
+                        TAG,
+                        "Pollfish Survey Received"
+                    )
+                    mLoadListener?.onAdLoaded()
+                }
+            })
+            .pollfishSurveyCompletedListener(object : PollfishSurveyCompletedListener {
+                override fun onPollfishSurveyCompleted(surveyInfo: SurveyInfo) {
+                    MoPubLog.log(
+                        MoPubLog.AdapterLogEvent.SHOULD_REWARD,
+                        TAG,
+                        "Pollfish Survey Completed"
+                    )
 
-                mInteractionListener?.onAdComplete(
-                    it?.let {
+                    mInteractionListener?.onAdComplete(
                         MoPubReward.success(
-                            it.rewardName,
-                            it.rewardValue
+                            surveyInfo.rewardName ?: "",
+                            surveyInfo.rewardValue ?: 0
                         )
-                    })
-            }
+                    )
+                }
+            })
             .rewardMode(true)
+            .platform(Platform.MOPUB)
             .build()
 
-        PollFish.initWith(context, params)
+        Pollfish.initWith(context, params)
         MoPubLog.log(MoPubLog.AdapterLogEvent.LOAD_ATTEMPTED, TAG)
     }
 
     override fun show() {
-        PollFish.show()
+        if (android.os.Build.VERSION.SDK_INT < 21) {
+            mLoadListener?.onAdLoadFailed(MoPubErrorCode.CANCELLED)
+            return
+        }
+
+        Pollfish.show()
     }
 
     object PollfishMoPubMediationSettings : MediationSettings {

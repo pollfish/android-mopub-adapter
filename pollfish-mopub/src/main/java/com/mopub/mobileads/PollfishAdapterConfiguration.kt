@@ -10,9 +10,7 @@ class PollfishAdapterConfiguration: BaseAdapterConfiguration() {
         return PollfishConstants.POLLFISH_ADAPTER_VERSION
     }
 
-    override fun getBiddingToken(context: Context): String? {
-        return null
-    }
+    override fun getBiddingToken(context: Context): String = ""
 
     override fun getMoPubNetworkName(): String {
         return PollfishConstants.POLLFISH_NETWORK_NAME

@@ -16,7 +16,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
         }
     }
     compileOptions {
@@ -35,9 +35,7 @@ dependencies {
         transitive = true
     }
 
-    implementation 'com.google.android.gms:play-services-ads-identifier:17.0.0'
-
-    implementation 'com.pollfish:pollfish:5.6.0:googleplayRelease@aar'
+    implementation 'com.pollfish:pollfish-googleplay:6.0.2'
 
     implementation project(":pollfish-mopub")
 }

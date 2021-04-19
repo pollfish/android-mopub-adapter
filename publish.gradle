@@ -15,8 +15,8 @@ publishing {
 
         release(MavenPublication) {
 
-            groupId "com.pollfish"
-            artifactId "mopub-adapter"
+            groupId "com.pollfish.mediation"
+            artifactId "pollfish-mopub"
             version android.defaultConfig.versionName
 
             def filename = "pollfish-mopub-${android.defaultConfig.versionName}"
@@ -24,7 +24,7 @@ publishing {
             artifact("$buildDir/outputs/aar/${filename}.aar")
 
             pom {
-                name = "mopub-adapter"
+                name = "pollfish-mopub"
                 description = "Adapter for showing Pollfish surveys within mobile apps through MoPub mediation"
                 url = "https://github.com/pollfish/android-mopub-adapter"
                 packaging = "aar"

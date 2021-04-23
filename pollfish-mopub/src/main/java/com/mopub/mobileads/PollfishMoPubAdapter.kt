@@ -2,6 +2,7 @@ package com.mopub.mobileads
 
 import android.app.Activity
 import android.content.Context
+import android.util.Log
 import com.mopub.common.LifecycleListener
 import com.mopub.common.MediationSettings
 import com.mopub.common.MoPubReward
@@ -30,6 +31,7 @@ class PollfishMoPubAdapter : BaseAd() {
 
     override fun load(context: Context, adData: AdData) {
         if (android.os.Build.VERSION.SDK_INT < 21) {
+            Log.d(TAG, "Pollfish surveys will not run on targets lower than 21");
             mLoadListener?.onAdLoadFailed(MoPubErrorCode.CANCELLED)
             return
         }
@@ -177,6 +179,7 @@ class PollfishMoPubAdapter : BaseAd() {
 
     override fun show() {
         if (android.os.Build.VERSION.SDK_INT < 21) {
+            Log.d(TAG, "Pollfish surveys will not run on targets lower than 21");
             mLoadListener?.onAdLoadFailed(MoPubErrorCode.CANCELLED)
             return
         }

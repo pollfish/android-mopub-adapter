@@ -3,13 +3,13 @@ plugins {
 }
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "30.0.2"
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.com.pollfish.mediation.mopub.example"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
     }
@@ -35,7 +35,7 @@ dependencies {
         transitive = true
     }
 
-    implementation 'com.pollfish:pollfish-googleplay:6.0.2'
+    implementation 'com.pollfish:pollfish-googleplay:6.1.1'
 
     implementation project(":pollfish-mopub")
 }

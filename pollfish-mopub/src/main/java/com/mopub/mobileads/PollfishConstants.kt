@@ -6,7 +6,7 @@ object PollfishConstants {
     const val POLLFISH_REQUEST_UUID_EXTRA_KEY = "request_uuid"
     const val POLLFISH_OFFERWALL_MODE_EXTRA_KEY = "offerwall_mode"
 
-    const val POLLFISH_ADAPTER_VERSION = "6.1.0"
-    const val POLLFISH_SDK_VERSION = "6.1.0"
+    const val POLLFISH_ADAPTER_VERSION = "6.1.1.0"
+    const val POLLFISH_SDK_VERSION = "6.1.1"
     const val POLLFISH_NETWORK_NAME = "pollfish"
 }

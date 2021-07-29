@@ -15,7 +15,7 @@ task prepareGoogleCloudDistDirs {
 }
 
 task packageGoogleCloudDistribution(type: Zip) {
-    archiveFileName = "Pollfish MoPub Adapter Anrdoid-${android.defaultConfig.versionName}.zip"
+    archiveFileName = "Pollfish MoPub Adapter Android-${android.defaultConfig.versionName}.zip"
     destinationDirectory = file("$buildDir/dist/public")
 
     from "$buildDir/tmp/dist/"

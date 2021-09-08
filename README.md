@@ -14,13 +14,13 @@ If you are using Android Studio, right click on your project and select New Modu
 
 **OR**
 
-#### **Retrieve Pollfish MoPub Adapter through maven()**
+#### **Retrieve Pollfish MoPub Adapter through mavenCentral()**
 
-Retrieve Pollfish through **maven()** with gradle by adding the following line in your project **build.gradle** (not the top level one, the one under 'app') in  dependencies section:  
+Retrieve Pollfish through **mavenCentral()** with gradle by adding the following line in your project **build.gradle** (not the top level one, the one under 'app') in  dependencies section:  
 
 ```groovy
 dependencies {
-    implementation 'com.pollfish.mediation:pollfish-mopub:6.1.2.0'
+    implementation 'com.pollfish.mediation:pollfish-mopub:6.1.5.0'
 }
 ```
 
@@ -44,7 +44,7 @@ import com.mopub.common.*;
 import com.mopub.mobileads.*;
 ```
 
-Implement `SdkInitializationListener` interface to listen for MoPub SDK intialisation completion
+Implement `SdkInitializationListener` interface to listen for MoPub SDK initialization completion
 
 <span style="text-decoration:underline">Kotlin</span>
 
@@ -191,10 +191,10 @@ Below you can see how to initialise **`PollfishMoPubMediationSettings`**  that i
 
 ```kotlin
 PollfishMoPubAdapter.PollfishMoPubMediationSettings
-    .create(apiKey: "API_KEY", 
-        requestUUID: "REQUEST_UUID", 
-        releaseMode: true,
-        offerwallMode: true)
+    .create(apiKey = "API_KEY", 
+        requestUUID = "REQUEST_UUID", 
+        releaseMode = true,
+        offerwallMode = true)
 ```
 
 No | Description

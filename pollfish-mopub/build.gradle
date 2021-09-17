@@ -10,8 +10,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 11
-        versionName "6.1.5.1"
+        versionCode 13
+        versionName "6.1.6.1"
     }
 
     buildTypes {
@@ -41,22 +41,8 @@ android {
         classifier = 'sources'
     }
 
-    task javadocBuild(type: Javadoc) {
-        failOnError false
-        source = android.sourceSets.main.java.sourceFiles
-        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-        classpath += configurations.compile
-    }
-
-    // build a jar with javadoc
-    task javadocJarBuild(type: Jar, dependsOn: javadocBuild) {
-        classifier = 'javadocBuild'
-        from javadocBuild.destinationDir
-    }
-
     artifacts {
         archives sourcesJarBuild
-        archives javadocJarBuild
     }
 
 }
@@ -68,8 +54,8 @@ dependencies {
         transitive = true
     }
 
-    api 'com.google.android.gms:play-services-ads-identifier:17.0.0'
-    api 'com.pollfish:pollfish-googleplay:6.1.5'
+    api 'com.google.android.gms:play-services-ads-identifier:17.0.1'
+    api 'com.pollfish:pollfish-googleplay:6.1.6'
 }
 
 apply from: '../publish.gradle'

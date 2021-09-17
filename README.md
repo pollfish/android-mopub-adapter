@@ -20,7 +20,7 @@ Retrieve Pollfish through **mavenCentral()** with gradle by adding the following
 
 ```groovy
 dependencies {
-    implementation 'com.pollfish.mediation:pollfish-mopub:6.1.5.1'
+    implementation 'com.pollfish.mediation:pollfish-mopub:6.1.6.1'
 }
 ```
 
